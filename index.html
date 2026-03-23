@@ -1,0 +1,877 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>SAFE GROUND — No more kids left behind</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=DM+Serif+Display:ital@0;1&family=DM+Sans:wght@300;400;500&display=swap" rel="stylesheet">
+<style>
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+:root {
+  --ink: #0f0e0d;
+  --paper: #f5f2ed;
+  --paper2: #ede9e2;
+  --red: #c8321a;
+  --red-dark: #9e2612;
+  --muted: #6b6560;
+  --border: #d4cfc8;
+}
+
+html { scroll-behavior: smooth; }
+
+body {
+  background: var(--paper);
+  color: var(--ink);
+  font-family: 'DM Sans', sans-serif;
+  font-weight: 300;
+  line-height: 1.6;
+  overflow-x: hidden;
+}
+
+/* NOISE TEXTURE OVERLAY */
+body::before {
+  content: '';
+  position: fixed;
+  inset: 0;
+  background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)' opacity='0.04'/%3E%3C/svg%3E");
+  pointer-events: none;
+  z-index: 999;
+  opacity: 0.5;
+}
+
+/* NAV */
+nav {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  z-index: 100;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 20px 40px;
+  background: var(--paper);
+  border-bottom: 1px solid var(--border);
+}
+
+.nav-logo {
+  font-family: 'Bebas Neue', sans-serif;
+  font-size: 22px;
+  letter-spacing: 0.08em;
+  color: var(--ink);
+  text-decoration: none;
+}
+
+.nav-logo span { color: var(--red); }
+
+nav ul {
+  list-style: none;
+  display: flex;
+  gap: 32px;
+}
+
+nav ul a {
+  font-size: 13px;
+  font-weight: 400;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  color: var(--muted);
+  text-decoration: none;
+  transition: color 0.2s;
+}
+
+nav ul a:hover { color: var(--ink); }
+
+.nav-cta {
+  background: var(--red);
+  color: #fff !important;
+  padding: 8px 20px;
+  border-radius: 2px;
+  transition: background 0.2s !important;
+}
+
+.nav-cta:hover { background: var(--red-dark) !important; color: #fff !important; }
+
+/* HERO */
+.hero {
+  min-height: 100vh;
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  padding-top: 80px;
+}
+
+.hero-left {
+  padding: 80px 60px 80px 60px;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  border-right: 1px solid var(--border);
+}
+
+.hero-eyebrow {
+  font-size: 11px;
+  font-weight: 500;
+  letter-spacing: 0.2em;
+  text-transform: uppercase;
+  color: var(--red);
+  margin-bottom: 24px;
+}
+
+h1 {
+  font-family: 'Bebas Neue', sans-serif;
+  font-size: clamp(72px, 9vw, 120px);
+  line-height: 0.9;
+  letter-spacing: 0.02em;
+  margin-bottom: 32px;
+}
+
+h1 em {
+  font-family: 'DM Serif Display', serif;
+  font-style: italic;
+  color: var(--red);
+  display: block;
+}
+
+.hero-body {
+  font-size: 17px;
+  line-height: 1.75;
+  color: var(--muted);
+  max-width: 440px;
+  margin-bottom: 40px;
+}
+
+.hero-body strong {
+  color: var(--ink);
+  font-weight: 500;
+}
+
+.btn-group {
+  display: flex;
+  gap: 16px;
+  flex-wrap: wrap;
+}
+
+.btn-primary {
+  display: inline-block;
+  background: var(--ink);
+  color: var(--paper);
+  padding: 14px 32px;
+  font-size: 13px;
+  font-weight: 500;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  text-decoration: none;
+  border-radius: 2px;
+  transition: background 0.2s, transform 0.1s;
+}
+
+.btn-primary:hover { background: var(--red); transform: translateY(-1px); }
+
+.btn-secondary {
+  display: inline-block;
+  border: 1px solid var(--border);
+  color: var(--ink);
+  padding: 14px 32px;
+  font-size: 13px;
+  font-weight: 400;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  text-decoration: none;
+  border-radius: 2px;
+  transition: border-color 0.2s, transform 0.1s;
+}
+
+.btn-secondary:hover { border-color: var(--ink); transform: translateY(-1px); }
+
+.hero-right {
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-end;
+  padding: 80px 60px;
+  background: var(--paper2);
+  position: relative;
+  overflow: hidden;
+}
+
+.hero-stat-block {
+  display: flex;
+  flex-direction: column;
+  gap: 40px;
+}
+
+.stat-item { border-top: 1px solid var(--border); padding-top: 20px; }
+
+.stat-number {
+  font-family: 'Bebas Neue', sans-serif;
+  font-size: 56px;
+  line-height: 1;
+  color: var(--red);
+  letter-spacing: 0.02em;
+}
+
+.stat-label {
+  font-size: 13px;
+  color: var(--muted);
+  margin-top: 4px;
+  letter-spacing: 0.05em;
+}
+
+.hero-quote {
+  margin-top: 48px;
+  padding: 24px;
+  border-left: 3px solid var(--red);
+  background: var(--paper);
+}
+
+.hero-quote p {
+  font-family: 'DM Serif Display', serif;
+  font-style: italic;
+  font-size: 19px;
+  line-height: 1.5;
+  color: var(--ink);
+}
+
+.hero-quote cite {
+  display: block;
+  margin-top: 12px;
+  font-size: 12px;
+  font-style: normal;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  color: var(--muted);
+}
+
+/* WHAT WE DO */
+.section { padding: 100px 60px; }
+
+.section-label {
+  font-size: 11px;
+  font-weight: 500;
+  letter-spacing: 0.2em;
+  text-transform: uppercase;
+  color: var(--red);
+  margin-bottom: 16px;
+}
+
+h2 {
+  font-family: 'Bebas Neue', sans-serif;
+  font-size: clamp(40px, 5vw, 64px);
+  line-height: 1;
+  letter-spacing: 0.03em;
+  margin-bottom: 48px;
+}
+
+.pillars {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 1px;
+  background: var(--border);
+  border: 1px solid var(--border);
+  margin-top: 60px;
+}
+
+.pillar {
+  background: var(--paper);
+  padding: 48px 36px;
+  transition: background 0.2s;
+}
+
+.pillar:hover { background: var(--paper2); }
+
+.pillar-number {
+  font-family: 'Bebas Neue', sans-serif;
+  font-size: 48px;
+  color: var(--border);
+  line-height: 1;
+  margin-bottom: 20px;
+  letter-spacing: 0.02em;
+}
+
+.pillar h3 {
+  font-family: 'DM Serif Display', serif;
+  font-size: 22px;
+  font-weight: 400;
+  margin-bottom: 12px;
+  line-height: 1.2;
+}
+
+.pillar p {
+  font-size: 15px;
+  color: var(--muted);
+  line-height: 1.7;
+}
+
+/* HOW IT WORKS */
+.how-section {
+  background: var(--ink);
+  color: var(--paper);
+  padding: 100px 60px;
+}
+
+.how-section .section-label { color: var(--red); }
+
+.how-section h2 { color: var(--paper); }
+
+.steps {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 40px;
+  margin-top: 60px;
+}
+
+.step { position: relative; }
+
+.step::after {
+  content: '→';
+  position: absolute;
+  top: 8px;
+  right: -24px;
+  color: var(--red);
+  font-size: 20px;
+}
+
+.step:last-child::after { display: none; }
+
+.step-num {
+  font-family: 'Bebas Neue', sans-serif;
+  font-size: 64px;
+  color: var(--red);
+  opacity: 0.3;
+  line-height: 1;
+  margin-bottom: 16px;
+}
+
+.step h4 {
+  font-family: 'DM Serif Display', serif;
+  font-size: 19px;
+  font-weight: 400;
+  margin-bottom: 10px;
+  line-height: 1.3;
+}
+
+.step p {
+  font-size: 14px;
+  color: #9e9890;
+  line-height: 1.7;
+}
+
+/* VIRTUAL KITCHEN */
+.kitchen-section {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  min-height: 500px;
+}
+
+.kitchen-left {
+  padding: 80px 60px;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+}
+
+.kitchen-right {
+  background: var(--paper2);
+  padding: 60px;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  border-left: 1px solid var(--border);
+}
+
+.kitchen-screen {
+  background: var(--ink);
+  aspect-ratio: 16/9;
+  border-radius: 4px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 12px;
+  border: 1px solid #333;
+  position: relative;
+  overflow: hidden;
+}
+
+.kitchen-screen::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background: radial-gradient(ellipse at center, rgba(200,50,26,0.1) 0%, transparent 70%);
+}
+
+.live-dot {
+  width: 8px;
+  height: 8px;
+  background: var(--red);
+  border-radius: 50%;
+  animation: pulse 1.5s ease-in-out infinite;
+}
+
+@keyframes pulse {
+  0%, 100% { opacity: 1; transform: scale(1); }
+  50% { opacity: 0.5; transform: scale(1.3); }
+}
+
+.kitchen-screen span {
+  font-size: 12px;
+  letter-spacing: 0.15em;
+  text-transform: uppercase;
+  color: #666;
+}
+
+.kitchen-screen .live-label {
+  font-size: 11px;
+  color: var(--red);
+  letter-spacing: 0.2em;
+  text-transform: uppercase;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.donors-list {
+  margin-top: 24px;
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+.donor-item {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 10px 14px;
+  background: var(--paper);
+  border: 1px solid var(--border);
+  border-radius: 2px;
+  font-size: 13px;
+}
+
+.donor-item .donor-name { color: var(--muted); }
+.donor-item .donor-gift { font-weight: 500; color: var(--red); }
+
+/* MANIFESTO */
+.manifesto {
+  padding: 120px 60px;
+  max-width: 900px;
+  margin: 0 auto;
+  text-align: center;
+}
+
+.manifesto h2 {
+  font-family: 'DM Serif Display', serif;
+  font-style: italic;
+  font-size: clamp(28px, 4vw, 48px);
+  font-weight: 400;
+  line-height: 1.3;
+  letter-spacing: 0;
+  margin-bottom: 0;
+}
+
+.manifesto h2 strong {
+  font-style: normal;
+  font-family: 'Bebas Neue', sans-serif;
+  font-size: 1.1em;
+  letter-spacing: 0.05em;
+  color: var(--red);
+}
+
+.divider {
+  width: 40px;
+  height: 2px;
+  background: var(--red);
+  margin: 48px auto;
+}
+
+.manifesto-body {
+  font-size: 17px;
+  line-height: 1.85;
+  color: var(--muted);
+  max-width: 640px;
+  margin: 0 auto;
+}
+
+/* JOIN */
+.join-section {
+  background: var(--paper2);
+  border-top: 1px solid var(--border);
+  border-bottom: 1px solid var(--border);
+  padding: 100px 60px;
+}
+
+.join-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr 1fr;
+  gap: 1px;
+  background: var(--border);
+  border: 1px solid var(--border);
+  margin-top: 60px;
+}
+
+.join-card {
+  background: var(--paper2);
+  padding: 48px 36px;
+  text-decoration: none;
+  color: var(--ink);
+  transition: background 0.2s;
+  display: block;
+}
+
+.join-card:hover { background: var(--paper); }
+
+.join-card-tag {
+  font-size: 10px;
+  font-weight: 500;
+  letter-spacing: 0.2em;
+  text-transform: uppercase;
+  color: var(--red);
+  margin-bottom: 16px;
+}
+
+.join-card h3 {
+  font-family: 'DM Serif Display', serif;
+  font-size: 24px;
+  font-weight: 400;
+  margin-bottom: 12px;
+  line-height: 1.2;
+}
+
+.join-card p {
+  font-size: 14px;
+  color: var(--muted);
+  line-height: 1.7;
+  margin-bottom: 24px;
+}
+
+.join-card .arrow {
+  font-size: 18px;
+  color: var(--red);
+  transition: transform 0.2s;
+  display: inline-block;
+}
+
+.join-card:hover .arrow { transform: translateX(4px); }
+
+/* FOOTER */
+footer {
+  padding: 60px;
+  display: grid;
+  grid-template-columns: 1fr 1fr 1fr;
+  gap: 40px;
+  border-top: 1px solid var(--border);
+}
+
+.footer-brand .nav-logo {
+  font-size: 28px;
+  display: block;
+  margin-bottom: 12px;
+}
+
+.footer-brand p {
+  font-size: 13px;
+  color: var(--muted);
+  line-height: 1.7;
+  max-width: 260px;
+}
+
+.footer-col h5 {
+  font-size: 11px;
+  font-weight: 500;
+  letter-spacing: 0.15em;
+  text-transform: uppercase;
+  margin-bottom: 16px;
+  color: var(--muted);
+}
+
+.footer-col ul { list-style: none; }
+.footer-col ul li { margin-bottom: 10px; }
+.footer-col ul a {
+  font-size: 14px;
+  color: var(--ink);
+  text-decoration: none;
+  transition: color 0.2s;
+}
+.footer-col ul a:hover { color: var(--red); }
+
+.footer-bottom {
+  padding: 20px 60px;
+  border-top: 1px solid var(--border);
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  font-size: 12px;
+  color: var(--muted);
+}
+
+/* ANIMATIONS */
+@keyframes fadeUp {
+  from { opacity: 0; transform: translateY(24px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+
+.hero-left > * {
+  animation: fadeUp 0.6s ease forwards;
+  opacity: 0;
+}
+
+.hero-eyebrow { animation-delay: 0.1s; }
+h1 { animation-delay: 0.2s; }
+.hero-body { animation-delay: 0.3s; }
+.btn-group { animation-delay: 0.4s; }
+
+/* MOBILE */
+@media (max-width: 900px) {
+  nav { padding: 16px 24px; }
+  nav ul { display: none; }
+  .hero { grid-template-columns: 1fr; }
+  .hero-left { padding: 60px 24px 40px; }
+  .hero-right { padding: 40px 24px 60px; border-right: none; border-top: 1px solid var(--border); }
+  .section { padding: 60px 24px; }
+  .pillars { grid-template-columns: 1fr; }
+  .how-section { padding: 60px 24px; }
+  .steps { grid-template-columns: 1fr 1fr; gap: 32px; }
+  .step::after { display: none; }
+  .kitchen-section { grid-template-columns: 1fr; }
+  .kitchen-left, .kitchen-right { padding: 48px 24px; }
+  .manifesto { padding: 80px 24px; }
+  .join-section { padding: 60px 24px; }
+  .join-grid { grid-template-columns: 1fr; }
+  footer { grid-template-columns: 1fr; padding: 48px 24px; }
+  .footer-bottom { padding: 16px 24px; flex-direction: column; gap: 8px; text-align: center; }
+}
+</style>
+</head>
+<body>
+
+<!-- NAV -->
+<nav>
+  <a href="#" class="nav-logo">SAFE<span>GROUND</span></a>
+  <ul>
+    <li><a href="#what-we-do">What we do</a></li>
+    <li><a href="#kitchen">Virtual kitchen</a></li>
+    <li><a href="#join">Get involved</a></li>
+    <li><a href="#join" class="nav-cta">Donate</a></li>
+  </ul>
+</nav>
+
+<!-- HERO -->
+<section class="hero">
+  <div class="hero-left">
+    <p class="hero-eyebrow">A network built by survivors, for survivors</p>
+    <h1>No child<br>gets left<br><em>behind.</em></h1>
+    <p class="hero-body">
+      <strong>SafeGround</strong> is a global network of safe spaces for young people fleeing abuse.
+      Real places. Real people. Run by those who lived it — and refused to let others go through it alone.
+    </p>
+    <div class="btn-group">
+      <a href="#join" class="btn-primary">Get involved</a>
+      <a href="#what-we-do" class="btn-secondary">How it works</a>
+    </div>
+  </div>
+  <div class="hero-right">
+    <div class="hero-stat-block">
+      <div class="stat-item">
+        <div class="stat-number">1 in 4</div>
+        <div class="stat-label">children worldwide experience abuse at home</div>
+      </div>
+      <div class="stat-item">
+        <div class="stat-number">0</div>
+        <div class="stat-label">should have nowhere to go</div>
+      </div>
+      <div class="stat-item">
+        <div class="stat-number">Every country</div>
+        <div class="stat-label">deserves a SafeGround location</div>
+      </div>
+    </div>
+    <div class="hero-quote">
+      <p>"I would have given anything just to know a safe place existed."</p>
+      <cite>— Founder, SafeGround</cite>
+    </div>
+  </div>
+</section>
+
+<!-- WHAT WE DO -->
+<section class="section" id="what-we-do">
+  <p class="section-label">What we do</p>
+  <h2>Safety is not a privilege.<br>It is a right.</h2>
+  <p style="max-width:560px; color:var(--muted); font-size:16px; line-height:1.75; margin-bottom:0;">
+    SafeGround operates warehouses-turned-sanctuaries across multiple countries. Each one is a temporary home — stocked, staffed, and run by people who have been there.
+  </p>
+  <div class="pillars">
+    <div class="pillar">
+      <div class="pillar-number">01</div>
+      <h3>Physical safe houses in multiple countries</h3>
+      <p>Real spaces where young people can stay, eat, sleep, and recover — without fear. Distributed so no single location can be shut down.</p>
+    </div>
+    <div class="pillar">
+      <div class="pillar-number">02</div>
+      <h3>Medical care and free therapy</h3>
+      <p>On-site medical supplies and therapists who volunteer their time. Partnerships with local hospitals for cases that need more care.</p>
+    </div>
+    <div class="pillar">
+      <div class="pillar-number">03</div>
+      <h3>Travel assistance and escape support</h3>
+      <p>We help buy tickets for young people who need to physically leave. No one stays trapped because they can't afford a bus ticket.</p>
+    </div>
+    <div class="pillar">
+      <div class="pillar-number">04</div>
+      <h3>Food and clothing, donated forward</h3>
+      <p>Those who leave donate what they can for those who arrive. A chain of giving built on lived solidarity, not charity.</p>
+    </div>
+    <div class="pillar">
+      <div class="pillar-number">05</div>
+      <h3>Education and pathways</h3>
+      <p>No young person should leave a safe house with nowhere to go next. We're building education access and job pathways for every resident.</p>
+    </div>
+    <div class="pillar">
+      <div class="pillar-number">06</div>
+      <h3>Survivor-led, always</h3>
+      <p>This organization is built and run by people with lived experience. We trust those who lived it to lead it.</p>
+    </div>
+  </div>
+</section>
+
+<!-- HOW IT WORKS -->
+<section class="how-section">
+  <p class="section-label">How it works</p>
+  <h2>From crisis to safety</h2>
+  <div class="steps">
+    <div class="step">
+      <div class="step-num">1</div>
+      <h4>A young person reaches out</h4>
+      <p>Through our contact line or website — anonymously if needed. No forms, no paperwork, no questions that can't wait.</p>
+    </div>
+    <div class="step">
+      <div class="step-num">2</div>
+      <h4>We find the nearest safe house</h4>
+      <p>Our network spans multiple countries. We connect them to the closest available location and help arrange travel if needed.</p>
+    </div>
+    <div class="step">
+      <div class="step-num">3</div>
+      <h4>They stay, recover, and heal</h4>
+      <p>Food, shelter, medical care, therapy — everything covered. No time limits for those who need longer.</p>
+    </div>
+    <div class="step">
+      <div class="step-num">4</div>
+      <h4>They help the next person</h4>
+      <p>When they leave, they donate what they can. Some come back as volunteers, counselors, or staff. The cycle becomes one of healing.</p>
+    </div>
+  </div>
+</section>
+
+<!-- VIRTUAL KITCHEN -->
+<section class="kitchen-section" id="kitchen">
+  <div class="kitchen-left">
+    <p class="section-label">The virtual kitchen</p>
+    <h2>Watch.<br>Feed.<br>Connect.</h2>
+    <p style="color:var(--muted); font-size:16px; line-height:1.75; max-width:420px; margin-bottom:32px;">
+      Every SafeGround kitchen has a live camera. You can watch meals being prepared, donate ingredients or groceries in real time, and know exactly where your contribution goes.
+    </p>
+    <p style="color:var(--muted); font-size:14px; line-height:1.75; max-width:400px;">
+      No vague impact reports. No middle layers. You see the kitchen. You feed the people in it.
+    </p>
+  </div>
+  <div class="kitchen-right">
+    <div class="kitchen-screen">
+      <div class="live-label">
+        <div class="live-dot"></div>
+        Live — Kitchen 01, Location TBD
+      </div>
+      <span>Camera feed coming when first house opens</span>
+    </div>
+    <div class="donors-list">
+      <div class="donor-item">
+        <span class="donor-name">Anonymous donor</span>
+        <span class="donor-gift">Groceries for 3 days →</span>
+      </div>
+      <div class="donor-item">
+        <span class="donor-name">A. from Germany</span>
+        <span class="donor-gift">Rice, lentils, oil →</span>
+      </div>
+      <div class="donor-item">
+        <span class="donor-name">Former resident</span>
+        <span class="donor-gift">Donated clothes + food →</span>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- MANIFESTO -->
+<section class="manifesto">
+  <h2>
+    This is not a charity.<br>
+    This is <strong>what happens</strong><br>
+    when the people who needed help<br>
+    <em>refuse to let anyone else go without it.</em>
+  </h2>
+  <div class="divider"></div>
+  <p class="manifesto-body">
+    We are not a government program. We are not a corporation.
+    We are people who know what it is to have nowhere to go —
+    and we are building the thing we wish had existed.
+    Every safe house. Every meal. Every ticket bought.
+    None of it is for us. All of it is for the next kid who reaches out.
+  </p>
+</section>
+
+<!-- JOIN -->
+<section class="join-section" id="join">
+  <p class="section-label">Get involved</p>
+  <h2>This only works if<br>we build it together.</h2>
+  <div class="join-grid">
+    <a href="mailto:hello@safeground.org" class="join-card">
+      <div class="join-card-tag">Co-found with us</div>
+      <h3>You survived it too. Help us build it.</h3>
+      <p>We're looking for people with lived experience who want to turn that experience into something that protects others. No credentials required. Just real knowledge.</p>
+      <span class="arrow">→</span>
+    </a>
+    <a href="#" class="join-card">
+      <div class="join-card-tag">Donate</div>
+      <h3>Feed a kitchen. Buy a ticket. Save a life.</h3>
+      <p>100% of donations go directly to operations — food, medical supplies, travel assistance, and safe house costs. We will publish every transaction.</p>
+      <span class="arrow">→</span>
+    </a>
+    <a href="mailto:hello@safeground.org" class="join-card">
+      <div class="join-card-tag">Volunteer your skills</div>
+      <h3>Therapist, lawyer, doctor, translator?</h3>
+      <p>We need therapists, lawyers specializing in child welfare, doctors, and translators willing to donate their time. Your skill is someone's lifeline.</p>
+      <span class="arrow">→</span>
+    </a>
+  </div>
+</section>
+
+<!-- FOOTER -->
+<footer>
+  <div class="footer-brand">
+    <a href="#" class="nav-logo">SAFE<span>GROUND</span></a>
+    <p>A global network of safe spaces built by survivors, for survivors. Every country. Every child. No exceptions.</p>
+  </div>
+  <div class="footer-col">
+    <h5>Organization</h5>
+    <ul>
+      <li><a href="#what-we-do">What we do</a></li>
+      <li><a href="#kitchen">Virtual kitchen</a></li>
+      <li><a href="#join">Get involved</a></li>
+      <li><a href="#">Our story</a></li>
+    </ul>
+  </div>
+  <div class="footer-col">
+    <h5>Contact</h5>
+    <ul>
+      <li><a href="mailto:hello@safeground.org">hello@safeground.org</a></li>
+      <li><a href="#">Press inquiries</a></li>
+      <li><a href="#">Partner with us</a></li>
+      <li><a href="#">For professionals</a></li>
+    </ul>
+  </div>
+</footer>
+<div class="footer-bottom">
+  <span>© 2026 SafeGround — [Placeholder name, to be updated]</span>
+  <span>Built by those who lived it.</span>
+</div>
+
+</body>
+</html>
